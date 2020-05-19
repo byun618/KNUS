@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="department">
+        <item>소프트웨어학</item>
+        <item>기계공학</item>
+        <item>나노</item>
+        <item>패디</item>
+    </string-array>
+
+</resources>
