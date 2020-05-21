@@ -1,4 +1,4 @@
-package com.knu.knus;
+package com.knu.knus.notice;
 
 public class NoticeViewItem {
 

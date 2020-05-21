@@ -12,6 +12,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.knu.knus.chat.ChatFragment;
+import com.knu.knus.compete.CompeteFragment;
+import com.knu.knus.notice.NoticeFragment;
 
 import java.util.ArrayList;
 import java.util.List;

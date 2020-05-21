@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import com.knu.knus.main.LoginFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fgManager;

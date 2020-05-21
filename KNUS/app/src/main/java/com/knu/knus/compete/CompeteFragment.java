@@ -1,4 +1,4 @@
-package com.knu.knus;
+package com.knu.knus.compete;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import com.knu.knus.R;
 
 public class CompeteFragment extends Fragment {
 

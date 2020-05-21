@@ -1,4 +1,4 @@
-package com.knu.knus;
+package com.knu.knus.notice;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.knu.knus.R;
 
 import java.util.ArrayList;
 
@@ -36,10 +38,9 @@ public class NoticeViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-        final int pos = position;
-        final Context context = parent.getContext();
+        Context context = parent.getContext();
 
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,7 +51,7 @@ public class NoticeViewAdapter extends BaseAdapter {
         TextView content_title = convertView.findViewById(R.id.content_title);
         TextView content_when = convertView.findViewById(R.id.content_when);
         TextView content_body = convertView.findViewById(R.id.content_body);
-        final TextView content_like = convertView.findViewById(R.id.content_like);
+        TextView content_like = convertView.findViewById(R.id.content_like);
 
         NoticeViewItem noticeViewItem = noticeViewItems.get(position);
 
@@ -69,9 +70,6 @@ public class NoticeViewAdapter extends BaseAdapter {
                 //디비에서 받아와서 좋아요 수 올리기
             }
         });
-
-
-
 
         return convertView;
     }
