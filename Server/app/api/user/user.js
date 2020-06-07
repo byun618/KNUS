@@ -10,7 +10,7 @@ let expireDay = 60000 * 3
 exports.check = (req, res) => {
     console.log('check ID duplication')
     var user_id = req.body.user_id
-    database.sequelize.query()
+
     database.User.findAll({
         where: {
             user_id: user_id
@@ -33,9 +33,11 @@ exports.signup = (req, res) => {
     var body = req.body
     var user_id = body.user_id
     var pwd = body.pwd
-    var category = body.category
+    var department = body.department
+    var grade = body.grade
     var name = body.name
-    var phone = body.phone
+
+    console.log(body)
 
     var date = moment().format('YYYY-MM-DD HH:mm:ss')
 
@@ -47,10 +49,10 @@ exports.signup = (req, res) => {
             database.User.create({
                 user_id: user_id,
                 pwd: pwd,
-                salt, salt,
-                category: category,
+                salt: salt,
+                grade: grade,
                 name: name,
-                phone: phone,
+                department: department,
                 signup_time: date
 
             }).then( () => {
@@ -64,72 +66,6 @@ exports.signup = (req, res) => {
     })
 }
 
-exports.autologin = (req, res) => {
-    console.log('Auto Login')
-
-    //cookie.session_id 검사
-    var cookie_session_id = req.cookies.session_id
-
-    //session_id 쿠키가 없을 때
-    if(cookie_session_id === undefined) {
-        console.log('There is no Cookie')
-        res.status(404).json({ result : "There is no Cookie" })
-        return
-    } else {
-        //있을때
-        database.AutoLogin.findOne({
-            where: {
-                session_id: cookie_session_id
-            }
-        }).then( (result) => {
-            let diff = moment.duration(moment(result.expire_date).diff(moment())).asDays()
-
-            //session_id 도 동일, 만료기간도 만족
-            if(diff > 0) {
-                //데이터베이스의 세션아이디 동기화
-
-                database.AutoLogin.destroy({
-                    where: {
-                        user_id: result.user_id
-                    }
-                }).then( () => {
-                
-                    database.AutoLogin.create({
-                        session_id: req.session.id,
-                        user_id: result.user_id,
-                        expire_date: moment().add(3, 'minutes').format('YYYY-MM-DD HH:mm:ss')
-                    }).then( () => {
-                        
-                        req.session.user_id = result.user_id
-
-                        console.log(req.session.user_id, 'successed to auto login')
-                        res.cookie('session_id', req.session.id, {maxAge: expireDay, httpOnly: true})
-                        res.status(200).json({ result : 'Success' })
-                        
-                    }).catch( (err) => {
-                        console.log('Undefined error', err)
-                        res.status(404).json({ result : 'Undefined error'})
-                    })
-
-                }).catch( () => {
-                    console.log('wrong deleted')
-                    res.status(404).json({result: 'Wrong deleted'})
-                })
-
-                
-            } else {
-                //자동로그인 실패
-                console.log('Expired auto login period')
-                res.status(404).json({ result : 'auto login period is expired'})
-            }
-
-        }).catch( (err) => {
-            console.log('There is no matched session_id')
-            res.status(404).json({ result : 'There is no matched session_id' })
-        })
-    }
-}
-
 exports.login = (req, res) => {
     console.log('Login')
 
@@ -141,44 +77,17 @@ exports.login = (req, res) => {
             user_id: login_id
         }
     }).then( (result) => {
-
         crypto.randomBytes(64, (err, buf) => {
             crypto.pbkdf2(login_pwd, result.salt, 100000, 64, 'sha512', (err, key) => {
-
-                if(result.pwd === key.toString('base64')){
-                    //쿠키만료후 수동로그인시 디비 세션아이디 처리
-                    
-                    database.AutoLogin.destroy({
-                        where: {
-                            user_id: login_id
-                        }
-                    }).then( () => {
-                    
-                        database.AutoLogin.create({
-                            session_id: req.session.id,
-                            user_id: login_id,
-                            expire_date: moment().add(3, 'minutes').format('YYYY-MM-DD HH:mm:ss')
-                        }).then( () => {
-                            
-                            req.session.user_id = login_id
-
-                            console.log(req.session.user_id, 'successed to login')
-                            res.cookie('session_id', req.session.id, {maxAge: expireDay, httpOnly: true})
-                            res.status(200).json({ result : 'Success' })
-
-                        }).catch( (err) => {
-                            console.log('Undefined error', err)
-                            res.status(404).json({ result : 'Undefined error'})
-                        })
-
-                    }).catch( () => {
-                        console.log('wrong deleted')
-                        res.status(404).json({result: 'Wrong deleted'})
-                    })
+                if (result.pwd === key.toString('base64')) {
+                    req.session.user_id = login_id
+                    console.log(req.session.id)
+                    console.log(req.session.user_id, 'successed to login')
+                    res.status(200).json({ result: 'Success' })
 
                 } else {
                     console.log('Invalid password')
-                    res.status(404).json({ result : 'Invalid password'})
+                    res.status(404).json({ result: 'Invalid password'})
                 }
             })
         })
