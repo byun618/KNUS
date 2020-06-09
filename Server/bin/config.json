@@ -1,16 +1,8 @@
 {
     "development": {
-        "username": "knucoin",
-        "password": "knucoin",
-        "database": "knucoin",
-        "host": "127.0.0.1",
-        "dialect": "mysql",
-        "operatorAliases": false
-    },
-    "test": {
-        "username": "knucoin",
-        "password": "knucoin",
-        "database": "test",
+        "username": "root",
+        "password": "yun525",
+        "database": "knus",
         "host": "127.0.0.1",
         "dialect": "mysql",
         "operatorAliases": false

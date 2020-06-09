@@ -7,25 +7,56 @@
     android:layout_height="match_parent">
 
     <EditText
+        android:id="@+id/signup_stdnumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="학번을 입력해주세요"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btn_dupcheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="학번 중복체크"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/signup_stdnumber"/>
+
+    <EditText
+        android:id="@+id/signup_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_dupcheck"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="영문, 숫자, 특수문자 최소 6자리 이상"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/signup_repwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="비밀번호를 다시 입력해주세요"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/signup_pwd"/>
+
+    <EditText
         android:id="@+id/signup_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="text"
         android:hint="이름을 입력해주세요"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
-
-    <EditText
-        android:id="@+id/signup_nunmber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:hint="학번을 입력해주세요"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:layout_below="@id/signup_name"/>
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/signup_repwd"/>
 
     <Spinner
         android:id="@+id/signup_department"
@@ -33,8 +64,8 @@
         android:layout_height="wrap_content"
         android:entries="@array/department"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:layout_below="@id/signup_nunmber"/>
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/signup_name"/>
 
     <Spinner
         android:id="@+id/signup_grade"
@@ -42,8 +73,10 @@
         android:layout_height="wrap_content"
         android:entries="@array/grade"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@id/signup_department" />
+
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"

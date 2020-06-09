@@ -6,8 +6,20 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             allowNull: false
         },
-        writer: {
+        board_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        contents: {
             type: DataTypes.STRING(45),
+            allowNull: false
+        },
+        time: {
+            type: DataTypes.STRING(45),
+            allowNull: false
+        },
+        user_id: {
+            type: DataTypes.STRING(10),
             allowNull: false
         }
     },{

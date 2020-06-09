@@ -19,13 +19,13 @@
         android:id="@+id/et_userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#11000000"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="UserName"
+        android:layout_above="@id/et_passWord"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="35dp"
-        android:layout_above="@id/et_passWord"/>
+        android:background="#11000000"
+        android:ems="10"
+        android:hint="UserName"
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/et_passWord"

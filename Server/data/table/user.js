@@ -1,7 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('student', {
-
-        student_id: {
+    return sequelize.define('user', {
+        user_id: {
             type: DataTypes.STRING(10),
             primaryKey: true,
             allowNull: false
@@ -32,6 +31,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     },{
         timestamps: false,
-        tableName: 'student'
+        tableName: 'user'
     })
 }

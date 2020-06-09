@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.knu.knus.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class NoticeViewAdapter extends BaseAdapter {
 
@@ -53,6 +54,7 @@ public class NoticeViewAdapter extends BaseAdapter {
         TextView content_body = convertView.findViewById(R.id.content_body);
         TextView content_like = convertView.findViewById(R.id.content_like);
 
+        Collections.reverse(noticeViewItems);
         NoticeViewItem noticeViewItem = noticeViewItems.get(position);
 
         content_profile.setImageResource(R.drawable.knu_logo);

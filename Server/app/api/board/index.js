@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const board = require('./board')
 
 module.exports = router
 
-router.use('/user', require('./user'))
-router.use('/board', require('./board'))
+router.post('/write', board.write)
