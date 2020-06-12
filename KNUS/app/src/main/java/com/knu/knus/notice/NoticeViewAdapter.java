@@ -9,10 +9,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.knu.knus.HTTPRequest;
 import com.knu.knus.R;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class NoticeViewAdapter extends BaseAdapter {
 
@@ -53,23 +55,38 @@ public class NoticeViewAdapter extends BaseAdapter {
         TextView notice_who = convertView.findViewById(R.id.notice_who);
 
 
-        NoticeViewItem noticeViewItem = noticeViewItems.get(position);
+        final NoticeViewItem noticeViewItem = noticeViewItems.get(position);
 
         notice_profile.setImageResource(R.drawable.knu_logo);
         notice_title.setText(noticeViewItem.getTitle());
         notice_when.setText(noticeViewItem.getWhen());
         notice_body.setText(noticeViewItem.getBody());
+        notice_who.setText(noticeViewItem.getWho());
 
         String like = "좋아요 " + noticeViewItem.getLike() + "개";
         notice_like.setText(like);
-
-        notice_who.setText(noticeViewItem.getWho());
 
         Button content_like_btn = convertView.findViewById(R.id.notice_like_btn);
         content_like_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //디비에서 받아와서 좋아요 수 올리기
+                try{
+                    String json = "";
+
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.accumulate("board_id", noticeViewItem.getId());
+
+                    json = jsonObject.toString();
+
+                    HTTPRequest request = new HTTPRequest("/board/good");
+
+                    int code = request.execute(json).get();
+
+                    System.out.println(code);
+
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 

@@ -49,11 +49,11 @@ exports.load = (req, res) => {
 
 exports.good = (req, res) => {
     console.log('good+1')
-    //var board_id = req.body.id
-  //  console.log(req.body)
+    var id = req.body.board_id
+    console.log(req.body)
     database.Board.findAll({
         where: {
-            id: req.params.id
+            id: id
         }
     }).then((result) => {
         if (result[0].good != null) {
@@ -61,7 +61,7 @@ exports.good = (req, res) => {
             database.Board.update({
                 good: good + 1
             },
-                { where: { id: board_id } }
+                { where: { id: id } }
             ).then((result) => {
                 res.status(404).json({ result: 'good' })
             }).catch(err => {
