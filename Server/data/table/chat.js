@@ -1,11 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('chat', {
-
-        chat_id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            allowNull: false
-        },
         student_id: {
             type: DataTypes.STRING(10),
             allowNull: false
@@ -20,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         time: {
             type: DataTypes.STRING(45),
-            allowNull: false
-        },
-        user_id: {
-            type: DataTypes.STRING(10),
             allowNull: false
         }
         
