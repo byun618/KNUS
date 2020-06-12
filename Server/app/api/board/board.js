@@ -46,3 +46,35 @@ exports.load = (req, res) => {
         res.status(404).json({result : 'Undefined err'})
     })
 }
+
+exports.good = (req, res) => {
+    console.log('good+1')
+    //var board_id = req.body.id
+  //  console.log(req.body)
+    database.Board.findAll({
+        where: {
+            id: req.params.id
+        }
+    }).then((result) => {
+        if (result[0].good != null) {
+            var good = result[0].good;
+            database.Board.update({
+                good: good + 1
+            },
+                { where: { id: board_id } }
+            ).then((result) => {
+                res.status(404).json({ result: 'good' })
+            }).catch(err => {
+                console.error(err);
+            });
+        }
+        else{
+            console.log('board search failed')
+            res.status(200).json({ result: 'no find' })
+        }
+    }).catch((err) => {
+        console.log(err)
+        res.status(404).json({ result: 'no' })
+    })
+    
+}

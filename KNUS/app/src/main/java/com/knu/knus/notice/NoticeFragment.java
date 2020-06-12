@@ -33,6 +33,7 @@ import java.net.URL;
 public class NoticeFragment extends Fragment {
 
     DataBaseHandler handler;
+    NoticeViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class NoticeFragment extends Fragment {
         handler = new DataBaseHandler(getContext());
 
         ListView listView = view.findViewById(R.id.notice_listVIew);
-        NoticeViewAdapter adapter = new NoticeViewAdapter();
+        adapter = new NoticeViewAdapter();
         listView.setAdapter(adapter);
 
         Button btn_write = view.findViewById(R.id.btn_notice_show_write);
@@ -71,7 +72,6 @@ public class NoticeFragment extends Fragment {
                 String when = object.getString("time");
 
                 adapter.addItem(id, title, body, Integer.parseInt(good), who, when);
-                System.out.println(id + " " + title + " " + body + " " + good + " " + who + " " + when);
             }
 
         } catch (Exception e) {

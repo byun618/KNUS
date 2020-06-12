@@ -18,9 +18,6 @@ public class NoticeViewAdapter extends BaseAdapter {
 
     private ArrayList<NoticeViewItem> noticeViewItems = new ArrayList<NoticeViewItem>();
 
-    public NoticeViewAdapter() {
-
-    }
 
     @Override
     public int getCount() {

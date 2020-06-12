@@ -62,7 +62,7 @@ public class HomeActivity extends AppCompatActivity {
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
         viewPagerAdapter.addFragment(new NoticeFragment(), "notice");
-        viewPagerAdapter.addFragment(new CompeteFragment(), "competetion");
+        viewPagerAdapter.addFragment(new CompeteFragment(), "competition");
         viewPagerAdapter.addFragment(new ChatFragment(), "chat");
 
         viewPager.setAdapter(viewPagerAdapter);
