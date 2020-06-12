@@ -35,7 +35,7 @@ import java.net.URL;
 public class CompeteFragment extends Fragment {
 
     DataBaseHandler handler;
-    NoticeViewAdapter adapter;
+    CompeteViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,11 +45,11 @@ public class CompeteFragment extends Fragment {
 
         handler = new DataBaseHandler(getContext());
 
-        ListView listView = view.findViewById(R.id.notice_listVIew);
-        adapter = new NoticeViewAdapter();
+        ListView listView = view.findViewById(R.id.compete_listVIew);
+        adapter = new CompeteViewAdapter();
         listView.setAdapter(adapter);
 
-        Button btn_write = view.findViewById(R.id.btn_notice_show_write);
+        Button btn_write = view.findViewById(R.id.btn_compete_show_write);
 
         btn_write.setOnClickListener(new View.OnClickListener() {
             @Override

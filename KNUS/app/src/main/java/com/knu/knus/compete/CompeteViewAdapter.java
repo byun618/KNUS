@@ -1,4 +1,4 @@
-package com.knu.knus.notice;
+package com.knu.knus.compete;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,24 +11,25 @@ import android.widget.TextView;
 
 import com.knu.knus.HTTPRequest;
 import com.knu.knus.R;
+import com.knu.knus.notice.NoticeViewItem;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class NoticeViewAdapter extends BaseAdapter {
+public class CompeteViewAdapter extends BaseAdapter {
 
-    private ArrayList<NoticeViewItem> noticeViewItems = new ArrayList<NoticeViewItem>();
+    private ArrayList<CompeteViewItem> competeViewItems = new ArrayList<CompeteViewItem>();
 
     @Override
     public int getCount() {
-        return noticeViewItems.size();
+        return competeViewItems.size();
     }
 
     @Override
     public Object getItem(int position) {
 
-        return noticeViewItems.get(position);
+        return competeViewItems.get(position);
     }
 
     @Override
@@ -43,37 +44,36 @@ public class NoticeViewAdapter extends BaseAdapter {
 
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.notice_item, parent, false);
+            convertView = inflater.inflate(R.layout.compete_item, parent, false);
         }
 
-        ImageView notice_profile = convertView.findViewById(R.id.notice_profile);
-        TextView notice_title = convertView.findViewById(R.id.notice_title);
-        TextView notice_when = convertView.findViewById(R.id.notice_when);
-        TextView notice_body = convertView.findViewById(R.id.notice_body);
-        TextView notice_like = convertView.findViewById(R.id.notice_like);
-        TextView notice_who = convertView.findViewById(R.id.notice_who);
+        ImageView compete_profile = convertView.findViewById(R.id.compete_profile);
+        TextView compete_title = convertView.findViewById(R.id.compete_title);
+        TextView compete_when = convertView.findViewById(R.id.compete_when);
+        TextView compete_body = convertView.findViewById(R.id.compete_body);
+        TextView compete_like = convertView.findViewById(R.id.compete_like);
+        TextView compete_who = convertView.findViewById(R.id.compete_who);
 
+        final CompeteViewItem competeViewItem = competeViewItems.get(position);
 
-        final NoticeViewItem noticeViewItem = noticeViewItems.get(position);
+        compete_profile.setImageResource(R.drawable.knu_logo);
+        compete_title.setText(competeViewItem.getTitle());
+        compete_when.setText(competeViewItem.getWhen());
+        compete_body.setText(competeViewItem.getBody());
+        compete_who.setText(competeViewItem.getWho());
 
-        notice_profile.setImageResource(R.drawable.knu_logo);
-        notice_title.setText(noticeViewItem.getTitle());
-        notice_when.setText(noticeViewItem.getWhen());
-        notice_body.setText(noticeViewItem.getBody());
-        notice_who.setText(noticeViewItem.getWho());
+        String like = "좋아요 " + competeViewItem.getLike() + "개";
+        compete_like.setText(like);
 
-        String like = "좋아요 " + noticeViewItem.getLike() + "개";
-        notice_like.setText(like);
-
-        Button notice_like_btn = convertView.findViewById(R.id.notice_like_btn);
-        notice_like_btn.setOnClickListener(new View.OnClickListener() {
+        Button compete_like_btn = convertView.findViewById(R.id.compete_like_btn);
+        compete_like_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
                     String json = "";
 
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.accumulate("board_id", noticeViewItem.getId());
+                    jsonObject.accumulate("board_id", competeViewItem.getId());
 
                     json = jsonObject.toString();
 
@@ -93,7 +93,7 @@ public class NoticeViewAdapter extends BaseAdapter {
     }
 
     public void addItem(String id, String title, String body, int like, String who, String when) {
-        NoticeViewItem item = new NoticeViewItem();
+        CompeteViewItem item = new CompeteViewItem();
 
         item.setId(id);
         item.setTitle(title);
@@ -102,6 +102,6 @@ public class NoticeViewAdapter extends BaseAdapter {
         item.setWho(who);
         item.setWhen(when);
 
-        noticeViewItems.add(item);
+        competeViewItems.add(item);
     }
 }
