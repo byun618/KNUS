@@ -48,23 +48,27 @@ public class NoticeViewAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.notice_item, parent, false);
         }
 
-        ImageView content_profile = convertView.findViewById(R.id.content_profile);
-        TextView content_title = convertView.findViewById(R.id.content_title);
-        TextView content_when = convertView.findViewById(R.id.content_when);
-        TextView content_body = convertView.findViewById(R.id.content_body);
-        TextView content_like = convertView.findViewById(R.id.content_like);
+        ImageView notice_profile = convertView.findViewById(R.id.notice_profile);
+        TextView notice_title = convertView.findViewById(R.id.notice_title);
+        TextView notice_when = convertView.findViewById(R.id.notice_when);
+        TextView notice_body = convertView.findViewById(R.id.notice_body);
+        TextView notice_like = convertView.findViewById(R.id.notice_like);
+        TextView notice_who = convertView.findViewById(R.id.notice_who);
 
-         NoticeViewItem noticeViewItem = noticeViewItems.get(position);
 
-        content_profile.setImageResource(R.drawable.knu_logo);
-        content_title.setText(noticeViewItem.getTitle());
-        content_when.setText("10분전");
-        content_body.setText(noticeViewItem.getContents());
+        NoticeViewItem noticeViewItem = noticeViewItems.get(position);
+
+        notice_profile.setImageResource(R.drawable.knu_logo);
+        notice_title.setText(noticeViewItem.getTitle());
+        notice_when.setText(noticeViewItem.getWhen());
+        notice_body.setText(noticeViewItem.getBody());
 
         String like = "좋아요 " + noticeViewItem.getLike() + "개";
-        content_like.setText(like);
+        notice_like.setText(like);
 
-        Button content_like_btn = convertView.findViewById(R.id.content_like_btn);
+        notice_who.setText(noticeViewItem.getWho());
+
+        Button content_like_btn = convertView.findViewById(R.id.notice_like_btn);
         content_like_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,12 +79,15 @@ public class NoticeViewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void addItem(String title, String contents, int like) {
+    public void addItem(String id, String title, String body, int like, String who, String when) {
         NoticeViewItem item = new NoticeViewItem();
 
+        item.setId(id);
         item.setTitle(title);
-        item.setContents(contents);
+        item.setBody(body);
         item.setLike(like);
+        item.setWho(who);
+        item.setWhen(when);
 
         noticeViewItems.add(item);
     }

@@ -5,3 +5,4 @@ const board = require('./board')
 module.exports = router
 
 router.post('/write', board.write)
+router.get('/load/:type', board.load)

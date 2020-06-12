@@ -20,7 +20,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/content_profile"
+                    android:id="@+id/notice_profile"
                     android:layout_width="80dp"
                     android:layout_height="80dp" />
 
@@ -31,12 +31,18 @@
                     android:paddingLeft="10dp">
 
                     <TextView
-                        android:id="@+id/content_title"
+                        android:id="@+id/notice_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"/>
+
+                    <TextView
+                        android:id="@+id/notice_when"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:id="@+id/content_when"
+                        android:id="@+id/notice_who"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -52,12 +58,13 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:id="@+id/content_body"
+                    android:id="@+id/notice_body"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"/>
 
                 <TextView
-                    android:id="@+id/content_like"
+                    android:id="@+id/notice_like"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="좋아요 1개"/>
@@ -70,18 +77,11 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/content_like_btn"
+                    android:id="@+id/notice_like_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:text="좋아요" />
-
-                <Button
-                    android:id="@+id/content_reply_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="댓글달기" />
 
             </LinearLayout>
         </LinearLayout>

@@ -21,8 +21,11 @@ import com.knu.knus.DataBaseHandler;
 import com.knu.knus.HTTPRequest;
 import com.knu.knus.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -52,10 +55,29 @@ public class NoticeFragment extends Fragment {
             }
         });
 
-        adapter.addItem("첫 번째 글", "변상현", 2);
-        adapter.addItem("두 번째 글", "변상현", 2);
-        adapter.addItem("세 번째 글", "변상현", 1);
-        adapter.addItem("네 번째 글", "변상현", 1);
+        try {
+            String result = new HTTPLoadBoard().execute().get();
+
+            JSONArray arr = new JSONArray(result);
+
+            for(int i=0; i<arr.length(); i++){
+                JSONObject object = arr.getJSONObject(i);
+
+                String id = object.getString("id");
+                String title = object.getString("title");
+                String body = object.getString("contents");
+                String good = object.getString("good");
+                String who = object.getString("user_id");
+                String when = object.getString("time");
+
+                adapter.addItem(id, title, body, Integer.parseInt(good), who, when);
+                System.out.println(id + " " + title + " " + body + " " + good + " " + who + " " + when);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         return view;
     }
@@ -139,5 +161,51 @@ public class NoticeFragment extends Fragment {
         return stdno;
     }
 
+    private class HTTPLoadBoard extends AsyncTask<Void, Void, String> {
+
+        private String url = "http://192.168.0.29:3000/api";
+        private String uri = "/board/load/notice";
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            String result = "";
+
+            try {
+                URL url = new URL(this.url + this.uri);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestMethod("GET");
+
+                conn.setDoInput(true);
+
+                if(conn.getResponseCode() == 200) {
+
+                    InputStream is = conn.getInputStream();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] byteBuffer = new byte[1024];
+                    byte[] byteData = null;
+                    int nLength = 0;
+                    while((nLength = is.read(byteBuffer, 0, byteBuffer.length)) != -1) {
+                        baos.write(byteBuffer, 0, nLength);
+                    }
+                    byteData = baos.toByteArray();
+
+                    result = new String(byteData);
+
+                } else {
+                    result = "Fail";
+                }
+
+                conn.disconnect();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+    }
 
 }

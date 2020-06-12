@@ -2,9 +2,28 @@ package com.knu.knus.notice;
 
 public class NoticeViewItem {
 
+    private String id;
+    private String who;
     private String title;
-    private String contents;
+    private String body;
     private int like;
+    private String when;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getWho() {
+        return who;
+    }
+
+    public void setWho(String who) {
+        this.who = who;
+    }
 
     public String getTitle() {
         return title;
@@ -14,15 +33,27 @@ public class NoticeViewItem {
         this.title = title;
     }
 
-    public String getContents() {
-        return contents;
+    public String getBody() {
+        return body;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public int getLike() { return like; }
+    public int getLike() {
+        return like;
+    }
 
-    public void setLike(int like) { this.like = like; }
+    public void setLike(int like) {
+        this.like = like;
+    }
+
+    public String getWhen() {
+        return when;
+    }
+
+    public void setWhen(String when) {
+        this.when = when;
+    }
 }

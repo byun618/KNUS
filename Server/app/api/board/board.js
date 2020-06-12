@@ -30,3 +30,19 @@ exports.write = (req, res) => {
         res.status(404).json({ result: "Undefined error" })
     })
 }
+
+exports.load = (req, res) => {
+    console.log('load notice')
+
+    database.Board.findAll({
+        where : {
+            type : req.params.type
+        }
+    }).then( (result) =>{
+        console.log('successed to load')
+        res.status(200).json(result)
+    }).catch( () => {
+        console.log('failed to load')
+        res.status(404).json({result : 'Undefined err'})
+    })
+}
