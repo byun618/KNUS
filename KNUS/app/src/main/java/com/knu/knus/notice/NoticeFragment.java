@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.knu.knus.DataBaseHandler;
+import com.knu.knus.HTTPRequest;
 import com.knu.knus.R;
 
 import org.json.JSONObject;
@@ -54,6 +55,7 @@ public class NoticeFragment extends Fragment {
         adapter.addItem("첫 번째 글", "변상현", 2);
         adapter.addItem("두 번째 글", "변상현", 2);
         adapter.addItem("세 번째 글", "변상현", 1);
+        adapter.addItem("네 번째 글", "변상현", 1);
 
         return view;
     }
@@ -82,17 +84,23 @@ public class NoticeFragment extends Fragment {
                     String json = "";
 
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.accumulate("type", "공지사항");
+                    jsonObject.accumulate("type", "notice");
                     jsonObject.accumulate("user_id", getUser());
                     jsonObject.accumulate("title", title);
                     jsonObject.accumulate("contents", content);
 
                     json = jsonObject.toString();
 
-                    Integer code = new WriteRequest().execute(json).get();
+                    HTTPRequest request = new HTTPRequest("/board/write");
 
-                    if(code == 200){
+                    Integer code = request.execute(json).get();
+
+                    if(code == 200) {
+
+                        Toast.makeText(getContext(), "업로드에 성공했습니다.", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                    } else {
+                        Toast.makeText(getContext(), "업로드에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     }
 
                 }catch (Exception e) {
@@ -131,49 +139,5 @@ public class NoticeFragment extends Fragment {
         return stdno;
     }
 
-    private class WriteRequest extends AsyncTask<String, Void, Integer>{
 
-        @Override
-        protected Integer doInBackground(String... params) {
-
-            int code = 0;
-
-            try {
-                URL url = new URL("http://192.168.0.29:3000/api/board/write");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestMethod("POST");
-
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                OutputStream os = conn.getOutputStream();
-                os.write(params[0].getBytes("utf-8"));
-                os.flush();
-
-                code = conn.getResponseCode();
-
-                conn.disconnect();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return code;
-        }
-
-        @Override
-        protected void onPostExecute(Integer code) {
-            super.onPostExecute(code);
-
-            if(code == 200){
-                Toast.makeText(getContext(), "업로드에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-
-            } else {
-                Toast.makeText(getContext(), "업로드에 실패하였습니다. 다시 시도 해주세요", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 }

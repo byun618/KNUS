@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.knu.knus.Expression;
+import com.knu.knus.HTTPRequest;
 import com.knu.knus.R;
 
 import org.json.JSONObject;
@@ -89,7 +90,17 @@ public class SignupFragment extends Fragment {
 
                     json = jsonObject.toString();
 
-                    new DupCheckRequest().execute(json);
+                    HTTPRequest request = new HTTPRequest("/user/check");
+
+                    int code = request.execute(json).get();
+
+                    if(code == 200){
+                        Toast.makeText(getContext(), "사용가능합니다.", Toast.LENGTH_SHORT).show();
+                        dupcheck = true;
+                    } else {
+                        Toast.makeText(getContext(), "이 학번은 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        dupcheck = false;
+                    }
 
                 }catch(Exception e){
                     e.printStackTrace();
@@ -115,10 +126,10 @@ public class SignupFragment extends Fragment {
                     Toast.makeText(getContext(), "학번 중복체크 먼저 해주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                if(pwd != repwd){
-//                    Toast.makeText(getContext(), "비밀번호가 다릅니다.", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
+                if(pwd != repwd){
+                    Toast.makeText(getContext(), "비밀번호가 다릅니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(!Expression.validatePassword(pwd)) {
                     Toast.makeText(getContext(), "비밀번호 조건을 만족해주세요.", Toast.LENGTH_SHORT).show();
                     return;
@@ -140,7 +151,22 @@ public class SignupFragment extends Fragment {
 
                     json = jsonObject.toString();
 
-                    new SignupRequest().execute(json);
+                    HTTPRequest request = new HTTPRequest("/user/signup");
+                    int code = request.execute(json).get();
+
+                    if(code == 200){
+
+                        Toast.makeText(getContext(), "회원가입에 성공하였습니다", Toast.LENGTH_SHORT).show();
+
+                        FragmentTransaction fgTrans = getFragmentManager().beginTransaction();
+                        fgTrans.replace(R.id.frameLayout, new LoginFragment());
+                        fgTrans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        fgTrans.addToBackStack(null);
+
+                        fgTrans.commit();
+                    } else {
+                        Toast.makeText(getContext(), "회원가입에 실패하였습니다. 다시 시도 해주세요", Toast.LENGTH_SHORT).show();
+                    }
 
                 }catch(Exception e){
                     e.printStackTrace();
@@ -151,109 +177,5 @@ public class SignupFragment extends Fragment {
 
 
         return view;
-    }
-
-    public class SignupRequest extends AsyncTask<String, Void, Integer>{
-
-        @Override
-        protected Integer doInBackground(String... params) {
-
-            int code = 0;
-
-            try {
-                URL url = new URL("http://192.168.0.29:3000/api/user/signup");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestMethod("POST");
-
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                OutputStream os = conn.getOutputStream();
-                os.write(params[0].getBytes("utf-8"));
-                os.flush();
-
-                code = conn.getResponseCode();
-
-                conn.disconnect();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return code;
-        }
-
-        @Override
-        protected void onPostExecute(Integer code) {
-            super.onPostExecute(code);
-
-            if(code == 200){
-
-
-                Toast.makeText(getContext(), "회원가입에 성공하였습니다", Toast.LENGTH_SHORT).show();
-
-                FragmentTransaction fgTrans = getFragmentManager().beginTransaction();
-                fgTrans.replace(R.id.frameLayout, new LoginFragment());
-                fgTrans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fgTrans.addToBackStack(null);
-
-                fgTrans.commit();
-            } else {
-                Toast.makeText(getContext(), "회원가입에 실패하였습니다. 다시 시도 해주세요", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-    private class DupCheckRequest extends AsyncTask<String, Void, Integer>{
-
-        @Override
-        protected Integer doInBackground(String... params) {
-
-            int code = 0;
-
-            try {
-                URL url = new URL("http://192.168.0.29:3000/api/user/check");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestMethod("POST");
-
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                OutputStream os = conn.getOutputStream();
-                os.write(params[0].getBytes("utf-8"));
-                os.flush();
-
-                code = conn.getResponseCode();
-
-                conn.disconnect();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return code;
-        }
-
-        @Override
-        protected void onPostExecute(Integer code) {
-            super.onPostExecute(code);
-
-            if(code == 200){
-                Toast.makeText(getContext(), "사용가능합니다.", Toast.LENGTH_SHORT).show();
-                dupcheck = true;
-            } else {
-                Toast.makeText(getContext(), "이 학번은 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show();
-                dupcheck = false;
-            }
-
-
-
-
-        }
     }
 }

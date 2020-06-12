@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.knu.knus.DataBaseHandler;
+import com.knu.knus.HTTPRequest;
 import com.knu.knus.HomeActivity;
 import com.knu.knus.R;
 
@@ -63,7 +64,30 @@ public class LoginFragment extends Fragment {
 
                     json = jsonObject.toString();
 
-                    new LoginRequest().execute(json);
+                    HTTPRequest request = new HTTPRequest("/user/login");
+                    int code = request.execute(json).get();
+
+                    if(code == 200){
+
+                        SQLiteDatabase db;
+                        ContentValues row;
+                        DataBaseHandler handler = new DataBaseHandler(getContext());
+                        db = handler.getWritableDatabase();
+                        row = new ContentValues();
+                        row.put("_id", 1);
+                        row.put("stdno", et_userName.getText().toString());
+                        db.replace("login", null, row);
+
+                        handler.close();
+
+                        Toast.makeText(getContext(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(getContext(), HomeActivity.class);
+                        startActivity(intent);
+
+                    } else {
+                        Toast.makeText(getContext(), "로그인에 실패하였습니다. 다시 시도 해주세요", Toast.LENGTH_SHORT).show();
+                    }
 
                 }catch(Exception e){
                     e.printStackTrace();
@@ -87,67 +111,4 @@ public class LoginFragment extends Fragment {
 
         return view;
     }
-
-    private class LoginRequest extends AsyncTask<String, Void, Integer>{
-
-        @Override
-        protected Integer doInBackground(String... params) {
-
-            int code = 0;
-
-            try {
-                URL url = new URL("http://192.168.0.29:3000/api/user/login");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestMethod("POST");
-
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                OutputStream os = conn.getOutputStream();
-                os.write(params[0].getBytes("utf-8"));
-                os.flush();
-
-                code = conn.getResponseCode();
-
-                conn.disconnect();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return code;
-        }
-
-        @Override
-        protected void onPostExecute(Integer code) {
-            super.onPostExecute(code);
-
-            if(code == 200){
-
-                SQLiteDatabase db;
-                ContentValues row;
-                DataBaseHandler handler = new DataBaseHandler(getContext());
-                db = handler.getWritableDatabase();
-                row = new ContentValues();
-                row.put("_id", 1);
-                row.put("stdno", et_userName.getText().toString());
-                db.replace("login", null, row);
-
-                handler.close();
-
-                Toast.makeText(getContext(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(getContext(), HomeActivity.class);
-                startActivity(intent);
-
-            } else {
-                Toast.makeText(getContext(), "로그인에 실패하였습니다. 다시 시도 해주세요", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-
 }
